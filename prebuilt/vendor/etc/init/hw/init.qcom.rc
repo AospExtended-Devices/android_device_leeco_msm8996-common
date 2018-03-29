@@ -57,6 +57,11 @@ on init
     chown root system /sys/fs/cgroup/memory/bg/tasks
     chmod 0660 /sys/fs/cgroup/memory/bg/tasks
 
+on fs
+
+    # for android.hardware.health@2.0-service.leeco_8996 cycle count backup
+    mkdir /persist/battery 0700 system system
+
 on post-fs
     chmod 0755 /sys/kernel/debug/tracing
 
@@ -438,6 +443,15 @@ on post-fs-data
 
 on property:persist.vendor.qcomsysd.enabled=1
     enable qcomsysd
+
+on early-boot
+
+    # vendor.health-hal needs to be able to RW
+    chown system system /sys/devices/soc/qpnp-fg-18/cycle_counts_bins
+    # HardwareInfo needs to be able to read CC bins
+    chmod 644 /sys/devices/soc/qpnp-fg-18/cycle_counts_bins
+    # Set RLIMIT_MEMLOCK to 64MB
+    setrlimit 8 67108864 67108864
 
 on property:persist.vendor.qcomsysd.enabled=0
     stop qcomsysd
