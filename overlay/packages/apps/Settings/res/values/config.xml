@@ -15,7 +15,7 @@
 -->
 
 <resources>
-  <bool name="config_show_volumeRockerWake">true</bool>
+    <bool name="config_show_volumeRockerWake">true</bool>
 
   <!-- Defines the location of the fingerprint sensor on the device
        0 = back
@@ -30,5 +30,8 @@
 
     <!-- Whether to add AGPS parameter settings -->
     <bool name="config_agps_enabled">true</bool>
+
+    <!-- Device specific doze package -->
+    <string name="config_customDozePackage">com.custom.ambient.display/com.custom.ambient.display.DozeSettings</string>
 
 </resources>
