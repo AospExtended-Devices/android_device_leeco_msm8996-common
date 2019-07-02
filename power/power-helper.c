@@ -103,8 +103,20 @@ int sustained_performance_mode = 0;
 int vr_mode = 0;
 
 //interaction boost global variables
+static pthread_mutex_t s_interaction_lock = PTHREAD_MUTEX_INITIALIZER;
 static struct timespec s_previous_boost_timespec;
 static int s_previous_duration;
+// Create Vox Populi variables
+int enable_interaction_boost;
+int fling_min_boost_duration;
+int fling_max_boost_duration;
+int fling_boost_topapp;
+int fling_min_freq_big;
+int fling_min_freq_little;
+int boost_duration;
+int touch_boost_topapp;
+int touch_min_freq_big;
+int touch_min_freq_little;
 
 void power_init(void)
 {
@@ -300,44 +312,58 @@ void power_hint(power_hint_t hint, void *data)
         {
             char governor[80];
 
-            if (get_scaling_governor(governor, sizeof(governor)) == -1) {
-                ALOGE("Can't obtain scaling governor.");
-                return;
-            }
-
             if (sustained_performance_mode || vr_mode) {
                 return;
             }
 
-            int duration = 1500; // 1.5s by default
-            if (data) {
-                int input_duration = *((int*)data) + 750;
-                if (input_duration > duration) {
-                    duration = (input_duration > 5750) ? 5750 : input_duration;
+            // Check if interaction_boost is enabled
+            if (enable_interaction_boost) {
+                if (data) { // Boost duration for scrolls/flings
+                    int input_duration = *((int*)data) + fling_min_boost_duration;
+                    boost_duration = (input_duration > fling_max_boost_duration) ? fling_max_boost_duration : input_duration;
+                } 
+
+                struct timespec cur_boost_timespec;
+                clock_gettime(CLOCK_MONOTONIC, &cur_boost_timespec);
+                long long elapsed_time = calc_timespan_us(s_previous_boost_timespec, cur_boost_timespec);
+                // don't hint if previous hint's duration covers this hint's duration
+                if ((s_previous_duration * 1000) > (elapsed_time + boost_duration * 1000)) {
+                    pthread_mutex_unlock(&s_interaction_lock);
+                    return;
+                }
+                s_previous_boost_timespec = cur_boost_timespec;
+                s_previous_duration = boost_duration;
+
+                // Scrolls/flings
+                if (data) {
+                    int eas_interaction_resources[] = { MIN_FREQ_BIG_CORE_0, fling_min_freq_big, 
+                                                        MIN_FREQ_LITTLE_CORE_0, fling_min_freq_little, 
+                                                        0x42C0C000, fling_boost_topapp,
+                                                        CPUBW_HWMON_MIN_FREQ, 0x33};
+                    interaction(boost_duration, sizeof(eas_interaction_resources)/sizeof(eas_interaction_resources[0]), eas_interaction_resources);
+                }
+                // Touches/taps
+                else {
+                    int eas_interaction_resources[] = { MIN_FREQ_BIG_CORE_0, touch_min_freq_big, 
+                                                        MIN_FREQ_LITTLE_CORE_0, touch_min_freq_little, 
+                                                        0x42C0C000, touch_boost_topapp, 
+                                                        CPUBW_HWMON_MIN_FREQ, 0x33};
+                    interaction(boost_duration, sizeof(eas_interaction_resources)/sizeof(eas_interaction_resources[0]), eas_interaction_resources);
                 }
             }
+            pthread_mutex_unlock(&s_interaction_lock);
 
-            struct timespec cur_boost_timespec;
-            clock_gettime(CLOCK_MONOTONIC, &cur_boost_timespec);
-
-            long long elapsed_time = calc_timespan_us(s_previous_boost_timespec, cur_boost_timespec);
-            // don't hint if previous hint's duration covers this hint's duration
-            if ((s_previous_duration * 1000) > (elapsed_time + duration * 1000)) {
-                return;
-            }
-            s_previous_boost_timespec = cur_boost_timespec;
-            s_previous_duration = duration;
-
-            // Scheduler is EAS.
-	    if (true || strncmp(governor, SCHEDUTIL_GOVERNOR, strlen(SCHEDUTIL_GOVERNOR)) == 0) {
-                // Setting the value of foreground schedtune boost to 50 and
-                // scaling_min_freq to 1100MHz.
-                int resources[] = {0x40800000, 1100, 0x40800100, 1100, 0x42C0C000, 0x32, 0x41800000, 0x33};
-                interaction(duration, sizeof(resources)/sizeof(resources[0]), resources);
-            } else { // Scheduler is HMP.
-                int resources[] = {0x41800000, 0x33, 0x40800000, 1000, 0x40800100, 1000, 0x40C00000, 0x1};
-                interaction(duration, sizeof(resources)/sizeof(resources[0]), resources);
-            }
+            // Update tunable values again
+            get_int(ENABLE_INTERACTION_BOOST_PATH, &enable_interaction_boost, 1);
+            get_int(FLING_MIN_BOOST_DURATION_PATH, &fling_min_boost_duration, 300);
+            get_int(FLING_MAX_BOOST_DURATION_PATH, &fling_max_boost_duration, 800);
+            get_int(FLING_BOOST_TOPAPP_PATH, &fling_boost_topapp, 10);
+            get_int(FLING_MIN_FREQ_BIG_PATH, &fling_min_freq_big, 1113);
+            get_int(FLING_MIN_FREQ_LITTLE_PATH, &fling_min_freq_little, 1113);
+            get_int(TOUCH_BOOST_DURATION_PATH, &boost_duration, 300);
+            get_int(TOUCH_BOOST_TOPAPP_PATH, &touch_boost_topapp, 10);
+            get_int(TOUCH_MIN_FREQ_BIG_PATH, &touch_min_freq_big, 1113);
+            get_int(TOUCH_MIN_FREQ_LITTLE_PATH, &touch_min_freq_little, 1113);
         }
         break;
         default:
@@ -638,4 +664,26 @@ static int extract_stats(uint64_t *list, char *file,
 
 int extract_platform_stats(uint64_t *list) {
     return extract_stats(list, RPM_SYSTEM_STAT, rpm_stat_map, ARRAY_SIZE(rpm_stat_map));
+}
+
+void get_int(const char* file_path, int* value, int fallback_value) {
+    FILE *file;
+    file = fopen(file_path, "r");
+    if (file == NULL) {
+        *value = fallback_value;
+        return;
+    }
+    fscanf(file, "%d", value);
+    fclose(file);
+}
+
+void get_hex(const char* file_path, int* value, int fallback_value) {
+    FILE *file;
+    file = fopen(file_path, "r");
+    if (file == NULL) {
+        *value = fallback_value;
+        return;
+    }
+    fscanf(file, "0x%x", value);
+    fclose(file);
 }
