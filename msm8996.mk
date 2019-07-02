@@ -193,6 +193,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     Doze
 
+# Fingerprint sensor
+PRODUCT_PACKAGES += \
+    fingerprintd \
+    fingerprint.msm8996
+
 # DRM
 PRODUCT_PACKAGES += \
     android.hardware.drm@1.0-impl \

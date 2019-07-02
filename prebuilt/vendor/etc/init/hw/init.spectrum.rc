@@ -84,8 +84,8 @@ on property:persist.spectrum.profile=0
     write /dev/voxpopuli/fling_min_freq_little      1400
     write /dev/voxpopuli/touch_boost_duration       100
     write /dev/voxpopuli/touch_boost_topapp         5
-    write /dev/voxpopuli/touch_min_freq_big         600
-    write /dev/voxpopuli/touch_min_freq_little      600
+    write /dev/voxpopuli/touch_min_freq_big         1100
+    write /dev/voxpopuli/touch_min_freq_little      1100
     chmod 0644 /dev/voxpopuli/enable_interaction_boost
     chmod 0644 /dev/voxpopuli/fling_min_boost_duration
     chmod 0644 /dev/voxpopuli/fling_max_boost_duration
@@ -614,12 +614,12 @@ on property:persist.spectrum.profile=4
     write /dev/voxpopuli/fling_min_boost_duration   300
     write /dev/voxpopuli/fling_max_boost_duration   800
     write /dev/voxpopuli/fling_boost_topapp         10
-    write /dev/voxpopuli/fling_min_freq_big         700
-    write /dev/voxpopuli/fling_min_freq_little      1400
+    write /dev/voxpopuli/fling_min_freq_big         1100
+    write /dev/voxpopuli/fling_min_freq_little      1100
     write /dev/voxpopuli/touch_boost_duration       200
     write /dev/voxpopuli/touch_boost_topapp         10
-    write /dev/voxpopuli/touch_min_freq_big         800
-    write /dev/voxpopuli/touch_min_freq_little      800
+    write /dev/voxpopuli/touch_min_freq_big         1100
+    write /dev/voxpopuli/touch_min_freq_little      1100
     chmod 0644 /dev/voxpopuli/enable_interaction_boost
     chmod 0644 /dev/voxpopuli/fling_min_boost_duration
     chmod 0644 /dev/voxpopuli/fling_max_boost_duration
@@ -687,8 +687,4 @@ on property:thermal.profile=11
     setprop sys.qcom.thermalcfg "/vendor/etc/thermal-engine-default.conf"
     stop thermal-engine
     start thermal-engine
-
-
-
-
 
