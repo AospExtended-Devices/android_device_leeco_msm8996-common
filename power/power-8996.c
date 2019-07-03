@@ -52,6 +52,10 @@
 static int display_hint_sent;
 int launch_handle = -1;
 int launch_mode;
+int launch_min_freq_big;
+int launch_min_freq_little;
+int launch_boost_topapp;
+int launch_boost_duration;
 
 #ifdef EXTRA_POWERHAL_HINTS
 static int process_cam_preview_hint(void *metadata)
@@ -136,9 +140,12 @@ static int process_cam_preview_hint(void *metadata)
 static int process_boost(int boost_handle, int duration)
 {
     char governor[80];
-    int eas_launch_resources[] = {0x40804000, 0xFFF, 0x40804100, 0xFFF,
-                                         0x40800000, 0xFFF, 0x40800100, 0xFFF,
-                                         0x41800000, 140,   0x40400000, 0x1};
+	
+    int eas_launch_resources[] = { MIN_FREQ_BIG_CORE_0, launch_min_freq_big, 
+                                        MIN_FREQ_LITTLE_CORE_0, launch_min_freq_little, 
+                                        0x42C0C000, launch_boost_topapp,
+                                        CPUBW_HWMON_MIN_FREQ, 0x33};
+										
     int hmp_launch_resources[] = {0x40C00000, 0x1,   0x40804000, 0xFFF,
                                          0x40804100, 0xFFF, 0x40800000, 0xFFF,
                                          0x40800100, 0xFFF, 0x41800000, 140,
@@ -164,6 +171,10 @@ static int process_boost(int boost_handle, int duration)
     boost_handle = interaction_with_handle(
         boost_handle, duration, launch_resources_size, launch_resources);
     return boost_handle;
+            get_int(LAUNCH_BOOST_DURATION_PATH, &launch_boost_duration, 1500);
+            get_int(LAUNCH_BOOST_TOPAPP_PATH, &launch_boost_topapp, 10);
+            get_int(LAUNCH_MIN_FREQ_BIG_PATH, &launch_min_freq_big, 1500);
+            get_int(LAUNCH_MIN_FREQ_LITTLE_PATH, &launch_min_freq_little, 1300);	
 }
 
 static int process_video_encode_hint(void *metadata)
@@ -244,7 +255,7 @@ static int process_video_encode_hint(void *metadata)
 static int process_activity_launch_hint(void *data)
 {
     // boost will timeout in 3s
-    int duration = 3000;
+    int duration = launch_boost_duration;
     ATRACE_BEGIN("launch");
     if (sustained_performance_mode || vr_mode) {
         ATRACE_END();

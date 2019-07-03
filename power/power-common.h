@@ -53,6 +53,10 @@
 #define TOUCH_BOOST_TOPAPP_PATH "/dev/voxpopuli/touch_boost_topapp"
 #define TOUCH_MIN_FREQ_BIG_PATH "/dev/voxpopuli/touch_min_freq_big"
 #define TOUCH_MIN_FREQ_LITTLE_PATH "/dev/voxpopuli/touch_min_freq_little"
+#define LAUNCH_BOOST_DURATION_PATH "/dev/voxpopuli/launch_boost_duration"
+#define LAUNCH_BOOST_TOPAPP_PATH "/dev/voxpopuli/launch_boost_topapp"
+#define LAUNCH_MIN_FREQ_BIG_PATH "/dev/voxpopuli/launch_min_freq_big"
+#define LAUNCH_MIN_FREQ_LITTLE_PATH "/dev/voxpopuli/launch_min_freq_little"
 #define HINT_HANDLED (0)
 #define HINT_NONE (-1)
 
