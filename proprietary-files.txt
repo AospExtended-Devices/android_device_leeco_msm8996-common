@@ -572,45 +572,13 @@ vendor/bin/pm-service|ca317d7448d7f115963c3f37ccebbe47ba53fa91
 vendor/lib/libperipheral_client.so|7e54351ec6cae4a302330671e247a2487e36ff15
 vendor/lib64/libperipheral_client.so|1a8db83ca35bb8f9e973cd6d988456d5e6696888
 
-# Perf - Gemini 8.0.0/OPR1.170623.032/8.9.13
-lib64/vendor.qti.hardware.iop@2.0.so
-lib64/vendor.qti.hardware.perf@1.0.so
-lib/vendor.qti.hardware.iop@2.0.so
-lib/vendor.qti.hardware.perf@1.0.so
+# Perf
+vendor/bin/perfd
 vendor/bin/energy-awareness
 vendor/bin/msm_irqbalance
-vendor/bin/hw/vendor.qti.hardware.iop@2.0-service
-vendor/bin/hw/vendor.qti.hardware.perf@1.0-service
-vendor/etc/init/vendor.qti.hardware.iop@2.0-service.rc
-vendor/etc/init/vendor.qti.hardware.perf@1.0-service.rc
-vendor/etc/perf/gamedwhitelist.xml
-vendor/etc/perf/perfboostsconfig.xml|fce795f55754630cf1db2049258a4a310736826f
-vendor/etc/perf/perf-profile0.conf
-vendor/etc/perf/perf-profile1.conf
-vendor/etc/perf/perf-profile2.conf
-vendor/etc/perf/perf-profile3.conf
-vendor/etc/perf/perf-profile4.conf
-vendor/etc/perf/perf-profile5.conf
-vendor/etc/perf/perf-profile6.conf
-vendor/lib64/hw/vendor.qti.hardware.iop@2.0-impl.so
-vendor/lib64/libfeedbackhandler.so
-vendor/lib64/libperfgluelayer.so
-vendor/lib64/libqti-iopd.so
+vendor/etc/perf-profile0.conf
 vendor/lib64/libqti-iopd-client.so
-vendor/lib64/libqti-perfd.so
-vendor/lib64/libqti-perfd-client.so
-vendor/lib64/libqti-util.so
-vendor/lib64/vendor.qti.hardware.iop@2.0.so
-vendor/lib64/vendor.qti.hardware.perf@1.0.so
-
-vendor/lib/hw/vendor.qti.hardware.iop@2.0-impl.so
-vendor/lib/libfeedbackhandler.so
-vendor/lib/libperfgluelayer.so
-vendor/lib/libqti-iopd.so
-vendor/lib/libqti-iopd-client.so
-vendor/lib/libqti-perfd.so
 vendor/lib/libqti-perfd-client.so
-vendor/lib/libqti-util.so
 
 
 # Postprocessing - from daisy - 9/PKQ1.180917.001/V10.0.3.0.PDLMIXM
@@ -809,8 +777,6 @@ vendor/lib64/vendor.qti.hardware.wifi.supplicant@2.0.so
 
 #Uncatogerised
 bin/mmi_diag
-bin/perfservice
-etc/init/perfservice.rc
 etc/permissions/com.qti.location.sdk.xml
 etc/permissions/com.qti.snapdragon.sdk.display.xml
 etc/permissions/com.qualcomm.location.xml
@@ -821,8 +787,6 @@ etc/permissions/izat.xt.srv.xml
 etc/permissions/privapp-permissions-com.qualcomm.location.xml
 etc/permissions/qti_libpermissions.xml
 etc/permissions/qti_permissions.xml
--framework/QPerformance.jar
--framework/UxPerformance.jar
 framework/com.qti.location.sdk.jar
 framework/com.qti.snapdragon.sdk.display.jar
 framework/com.qualcomm.qti.imscmservice-V2.0-java.jar
@@ -857,11 +821,6 @@ lib/liblocationservice_jni.so
 lib/libmdsprpc_system.so
 lib/libmmi_jni.so
 lib/libqmi_cci_system.so
-lib/libqti-at.so
-lib/libqti-iopd-client_system.so
-lib/libqti-perfd-client_system.so
-lib/libqti-util_system.so
-lib/libqti_performance.so
 lib/libsd_sdk_display.so
 lib/libsdm-disp-apis.so
 lib/libsensor1.so
@@ -904,11 +863,6 @@ lib64/libmmparser_lite.so
 lib64/libmmrtpdecoder.so
 lib64/libmmrtpencoder.so
 lib64/libqmi_cci_system.so
-lib64/libqti-at.so
-lib64/libqti-iopd-client_system.so
-lib64/libqti-perfd-client_system.so
-lib64/libqti-util_system.so
-lib64/libqti_performance.so
 lib64/libsd_sdk_display.so
 lib64/libsdm-disp-apis.so
 lib64/libsensor1.so
