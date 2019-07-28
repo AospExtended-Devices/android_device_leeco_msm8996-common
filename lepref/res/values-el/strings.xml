@@ -4,4 +4,27 @@
     <string name="battery_settings_title">Μπαταρία</string>
     <string name="qc_title">Γρήγορη φόρτιση</string>
     <string name="qc_summary">Ενεργοποίηση/απενεργοποίηση της γρήγορης φόρτισης</string>
+    <string name="graphics_title">Γραφικά</string>
+    <string name="kcal_title">Χρώματα οθόνης</string>
+    <string name="kcal_summary">Τροποποίηση χρωμάτων οθόνης με χρήση KCAL</string>
+    <string name="kcal_enabled_title">Ενεργοποίηση KCAL</string>
+    <string name="kcal_enabled_summary">Ενεργοποίηση τροποποιήσεων οθόνης με χρήση KCAL</string>
+    <string name="kcal_red">Κόκκινο</string>
+    <string name="kcal_green">Πράσινο</string>
+    <string name="kcal_blue">Μπλέ</string>
+    <string name="kcal_saturation">Κορεσμός</string>
+    <string name="kcal_contrast">Αντίθεση</string>
+    <string name="menu_reset">Επαναφορά</string>
+    <string name="kcal_color_temp">Θερμοκρασία χρωμάτων (K)</string>
+	<string name="cdla_settings_title">Ακουστικά</string>
+    <string name="cdla_title">CDLA</string>
+    <string name="cdla_summary">Δουλεύει μόνο ενα έχετε εγκαταστήσει το EUI Audio</string>
+    <string name="camera_pref_title">Φωτογραφική</string>
+    <string name="camera_focus_fix_title">Fix αυτόματης εστίασης</string>
+    <string name="camera_focus_fix_summary">Ενεργοποιήστε το, μόνο αν έχετε προβλήματα εστίασης</string>
+    <string name="spectrum_profile_title">Προφίλ CPU-ενέργειας</string>
+    <string name="spectrum_title">Προφίλ CPU-ενέργειας</string>
+    <string name="spectrum_summary">Επιλέξτε το δικό σας προφίλ βελτιστοποίησης ενέργειας-πυρήνα</string>
+    <string name="spectrum_dialogTitle">Επιλέξτε το δικό σας προφίλ ενέργειας</string>
+    <string name="powersave_settings_title">Εξοικονόμηση ενέργειας</string>
 </resources>
