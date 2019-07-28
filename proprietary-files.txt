@@ -577,7 +577,7 @@ vendor/bin/perfd
 vendor/bin/energy-awareness
 vendor/bin/msm_irqbalance
 vendor/etc/perf-profile0.conf
-vendor/lib64/libqti-iopd-client.so
+vendor/lib64/libqti-perfd-client.so
 vendor/lib/libqti-perfd-client.so
 
 
