@@ -38,7 +38,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "gralloc_priv.h"
-#include "native_handle.h"
+#include "cutils/native_handle.h"
 
 // Camera definitions
 #include "android/QCamera2External.h"
@@ -5950,6 +5950,7 @@ void QCamera2HardwareInterface::camEvtHandle(uint32_t /*camera_handle*/,
                         obj->mDefCond.broadcast();
                         LOGH("broadcast mDefCond signal\n");
                     }
+		    break;
                 default:
                     obj->processEvt(QCAMERA_SM_EVT_EVT_NOTIFY, payload);
                     break;
